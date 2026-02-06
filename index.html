@@ -558,6 +558,31 @@ body {
     justify-content: center;
 }
 
+/* Loading State */
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--primary);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Error Message */
+.error-message {
+    color: var(--danger);
+    font-size: 0.85rem;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
 /* Join Private Form */
 .join-private-form {
     max-width: 500px;
@@ -1203,6 +1228,10 @@ body {
                     <div class="form-group">
                         <label class="form-label" for="groupName">Gruppenname</label>
                         <input type="text" class="form-input" id="groupName" placeholder="Gib deiner Gruppe einen Namen">
+                        <div class="error-message" id="nameError" style="display: none;">
+                            <span class="material-icons-outlined" style="font-size: 16px;">error</span>
+                            <span id="nameErrorText"></span>
+                        </div>
                     </div>
                     
                     <div class="form-group">
@@ -1221,6 +1250,10 @@ body {
                     <div class="form-group" id="privateSettings" style="display: none;">
                         <label class="form-label" for="groupCode">Einladungscode (optional)</label>
                         <input type="text" class="form-input" id="groupCode" placeholder="Lasse leer für automatischen Code">
+                        <div class="error-message" id="codeError" style="display: none;">
+                            <span class="material-icons-outlined" style="font-size: 16px;">error</span>
+                            <span id="codeErrorText"></span>
+                        </div>
                         <small style="color: var(--gray); display: block; margin-top: 5px;">Gib einen 6-stelligen Code ein oder lasse ihn automatisch generieren</small>
                     </div>
                     
@@ -1231,7 +1264,8 @@ body {
                         </button>
                         <button class="btn btn-primary" id="createGroupBtn">
                             <span class="material-icons-outlined">add</span>
-                            <span>Gruppe erstellen</span>
+                            <span id="createButtonText">Gruppe erstellen</span>
+                            <span class="loading-spinner" id="createLoadingSpinner" style="display: none; margin-left: 8px;"></span>
                         </button>
                     </div>
                 </div>
@@ -1246,6 +1280,10 @@ body {
                     <div class="form-group">
                         <label class="form-label" for="joinCode">Einladungscode</label>
                         <input type="text" class="form-input" id="joinCode" placeholder="6-stelliger Code (z.B. ABC123)">
+                        <div class="error-message" id="joinError" style="display: none;">
+                            <span class="material-icons-outlined" style="font-size: 16px;">error</span>
+                            <span id="joinErrorText"></span>
+                        </div>
                     </div>
                     
                     <div class="form-actions">
@@ -1255,7 +1293,8 @@ body {
                         </button>
                         <button class="btn btn-primary" id="joinGroupBtn">
                             <span class="material-icons-outlined">key</span>
-                            <span>Beitreten</span>
+                            <span id="joinButtonText">Beitreten</span>
+                            <span class="loading-spinner" id="joinLoadingSpinner" style="display: none; margin-left: 8px;"></span>
                         </button>
                     </div>
                 </div>
@@ -1313,7 +1352,8 @@ let currentGroup = null;
 let currentGroupListener = null;
 let sentMessageIds = new Set();
 let onlineUsers = {};
-let onlineCountInterval = null;
+let isCreatingGroup = false;
+let isJoiningGroup = false;
 
 // DOM Elements
 const loginScreen = document.getElementById('loginScreen');
@@ -1698,6 +1738,55 @@ function updateHeader(page) {
     }
 }
 
+// Helper Functions
+function generateGroupCode() {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let code = '';
+    for (let i = 0; i < 6; i++) {
+        code += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return code;
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Check if group name already exists
+async function checkGroupNameExists(name, type) {
+    try {
+        const snapshot = await db.ref(`groups/${type}`).once('value');
+        const groups = snapshot.val();
+        
+        if (!groups) return false;
+        
+        // Check if any group has the same name (case-insensitive)
+        const lowerCaseName = name.toLowerCase();
+        for (const groupId in groups) {
+            if (groups[groupId].name.toLowerCase() === lowerCaseName) {
+                return true;
+            }
+        }
+        return false;
+    } catch (error) {
+        console.error('Error checking group name:', error);
+        return false;
+    }
+}
+
+// Check if group code already exists
+async function checkGroupCodeExists(code) {
+    try {
+        const snapshot = await db.ref('groups/private').orderByChild('code').equalTo(code).once('value');
+        return snapshot.exists();
+    } catch (error) {
+        console.error('Error checking group code:', error);
+        return false;
+    }
+}
+
 // Groups Functions
 function loadPublicGroups() {
     const publicGroupsGrid = document.getElementById('publicGroupsGrid');
@@ -2072,58 +2161,176 @@ function displayMessage(message) {
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
 }
 
-function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-}
-
-// Group Creation
+// Group Creation with Duplicate Protection
 function setupCreateGroupForm() {
     const groupTypeSelect = document.getElementById('groupType');
     const privateSettings = document.getElementById('privateSettings');
     const createGroupBtn = document.getElementById('createGroupBtn');
     const cancelCreate = document.getElementById('cancelCreate');
+    const groupNameInput = document.getElementById('groupName');
+    const groupCodeInput = document.getElementById('groupCode');
     
-    if (!groupTypeSelect || !privateSettings || !createGroupBtn || !cancelCreate) return;
+    if (!groupTypeSelect || !privateSettings || !createGroupBtn || !cancelCreate || !groupNameInput) return;
+    
+    // Reset form state
+    groupNameInput.value = '';
+    document.getElementById('groupDescription').value = '';
+    groupCodeInput.value = '';
+    groupTypeSelect.value = 'public';
+    privateSettings.style.display = 'none';
+    
+    // Hide error messages
+    document.getElementById('nameError').style.display = 'none';
+    document.getElementById('codeError').style.display = 'none';
     
     // Show/hide private settings
     groupTypeSelect.addEventListener('change', (e) => {
         privateSettings.style.display = e.target.value === 'private' ? 'block' : 'none';
     });
     
+    // Real-time name validation
+    groupNameInput.addEventListener('input', debounce(async function() {
+        const name = this.value.trim();
+        const nameError = document.getElementById('nameError');
+        
+        if (name.length < 3) {
+            nameError.style.display = 'block';
+            nameErrorText.textContent = 'Name muss mindestens 3 Zeichen lang sein';
+            return;
+        }
+        
+        if (name.length > 50) {
+            nameError.style.display = 'block';
+            nameErrorText.textContent = 'Name darf maximal 50 Zeichen lang sein';
+            return;
+        }
+        
+        // Check for duplicate name in public groups
+        const exists = await checkGroupNameExists(name, 'public');
+        if (exists) {
+            nameError.style.display = 'block';
+            nameErrorText.textContent = 'Dieser Gruppenname existiert bereits';
+        } else {
+            nameError.style.display = 'none';
+        }
+    }, 500));
+    
+    // Real-time code validation
+    groupCodeInput.addEventListener('input', debounce(async function() {
+        const code = this.value.trim().toUpperCase();
+        const codeError = document.getElementById('codeError');
+        
+        if (code && code.length !== 6) {
+            codeError.style.display = 'block';
+            codeErrorText.textContent = 'Code muss genau 6 Zeichen lang sein';
+            return;
+        }
+        
+        if (code) {
+            const exists = await checkGroupCodeExists(code);
+            if (exists) {
+                codeError.style.display = 'block';
+                codeErrorText.textContent = 'Dieser Code wird bereits verwendet';
+            } else {
+                codeError.style.display = 'none';
+            }
+        } else {
+            codeError.style.display = 'none';
+        }
+    }, 500));
+    
     // Create group
-    createGroupBtn.addEventListener('click', () => {
+    createGroupBtn.addEventListener('click', async () => {
+        if (isCreatingGroup) return;
+        
         if (!currentUser) {
             showNotification('Fehler', 'Du musst angemeldet sein, um Gruppen zu erstellen', 'error');
             return;
         }
         
-        const name = document.getElementById('groupName')?.value.trim();
+        const name = groupNameInput.value.trim();
         const description = document.getElementById('groupDescription')?.value.trim();
         const type = groupTypeSelect.value;
+        let code = null;
         
+        // Validation
         if (!name || name.length < 3) {
             showNotification('Fehler', 'Bitte einen Gruppennamen eingeben (min. 3 Zeichen)', 'error');
             return;
         }
         
-        let code = null;
+        if (name.length > 50) {
+            showNotification('Fehler', 'Gruppenname darf maximal 50 Zeichen lang sein', 'error');
+            return;
+        }
+        
         if (type === 'private') {
-            code = document.getElementById('groupCode')?.value.trim().toUpperCase() || generateGroupCode();
+            code = groupCodeInput.value.trim().toUpperCase() || generateGroupCode();
             if (code && code.length !== 6) {
                 showNotification('Fehler', 'Der Code muss 6 Zeichen lang sein', 'error');
                 return;
             }
         }
         
-        createGroup(name, description, type, code);
+        // Disable button and show loading
+        isCreatingGroup = true;
+        createGroupBtn.disabled = true;
+        document.getElementById('createLoadingSpinner').style.display = 'inline-block';
+        document.getElementById('createButtonText').textContent = 'Wird erstellt...';
+        
+        try {
+            // Final duplicate check
+            const nameExists = await checkGroupNameExists(name, type);
+            if (nameExists) {
+                showNotification('Fehler', 'Eine Gruppe mit diesem Namen existiert bereits', 'error');
+                throw new Error('Duplicate group name');
+            }
+            
+            if (code) {
+                const codeExists = await checkGroupCodeExists(code);
+                if (codeExists) {
+                    showNotification('Fehler', 'Dieser Code wird bereits verwendet', 'error');
+                    throw new Error('Duplicate group code');
+                }
+            }
+            
+            // Create the group
+            await createGroup(name, description, type, code);
+            
+            // Reset form
+            groupNameInput.value = '';
+            document.getElementById('groupDescription').value = '';
+            groupCodeInput.value = '';
+            
+        } catch (error) {
+            console.error('Error creating group:', error);
+            // Error notification already shown
+        } finally {
+            // Re-enable button
+            isCreatingGroup = false;
+            createGroupBtn.disabled = false;
+            document.getElementById('createLoadingSpinner').style.display = 'none';
+            document.getElementById('createButtonText').textContent = 'Gruppe erstellen';
+        }
     });
     
     // Cancel creation
     cancelCreate.addEventListener('click', () => {
         showPage('public');
     });
+}
+
+// Debounce function for input validation
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func.apply(this, args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
 }
 
 function setupJoinPrivateForm() {
@@ -2133,7 +2340,13 @@ function setupJoinPrivateForm() {
     
     if (!joinGroupBtn || !cancelJoin || !joinCodeInput) return;
     
-    joinGroupBtn.addEventListener('click', () => {
+    // Reset form
+    joinCodeInput.value = '';
+    document.getElementById('joinError').style.display = 'none';
+    
+    joinGroupBtn.addEventListener('click', async () => {
+        if (isJoiningGroup) return;
+        
         if (!currentUser) {
             showNotification('Fehler', 'Du musst angemeldet sein, um Gruppen beizutreten', 'error');
             return;
@@ -2142,51 +2355,68 @@ function setupJoinPrivateForm() {
         const code = joinCodeInput.value.trim().toUpperCase();
         
         if (!code || code.length !== 6) {
-            showNotification('Fehler', 'Bitte gib einen gültigen 6-stelligen Code ein', 'error');
+            document.getElementById('joinError').style.display = 'block';
+            joinErrorText.textContent = 'Bitte einen gültigen 6-stelligen Code eingeben';
             return;
         }
         
-        // Find group with this code
-        db.ref('groups/private').orderByChild('code').equalTo(code).once('value')
-            .then(snapshot => {
-                const groups = snapshot.val();
-                
-                if (!groups) {
-                    showNotification('Fehler', 'Keine Gruppe mit diesem Code gefunden', 'error');
-                    return;
-                }
-                
-                const groupId = Object.keys(groups)[0];
-                const group = groups[groupId];
-                
-                // Check if user is already a member
-                if (group.members && group.members[currentUser.uid]) {
-                    showNotification('Info', 'Du bist bereits Mitglied dieser Gruppe', 'info');
-                    enterGroup(groupId, 'private', group);
-                    return;
-                }
-                
-                // Add user to group
-                const updates = {};
-                updates[`groups/private/${groupId}/members/${currentUser.uid}`] = {
-                    name: currentUser.displayName,
-                    email: currentUser.email,
-                    joinedAt: Date.now(),
-                    role: 'member'
-                };
-                
-                updates[`userGroups/${currentUser.uid}/private/${groupId}`] = true;
-                
-                return db.ref().update(updates).then(() => {
-                    showNotification('Beigetreten', `Du bist ${group.name} beigetreten`, 'success');
-                    joinCodeInput.value = '';
-                    enterGroup(groupId, 'private', group);
-                });
-            })
-            .catch(error => {
-                console.error('Join group error:', error);
+        // Disable button and show loading
+        isJoiningGroup = true;
+        joinGroupBtn.disabled = true;
+        document.getElementById('joinLoadingSpinner').style.display = 'inline-block';
+        document.getElementById('joinButtonText').textContent = 'Beitritt...';
+        
+        try {
+            // Find group with this code
+            const snapshot = await db.ref('groups/private').orderByChild('code').equalTo(code).once('value');
+            const groups = snapshot.val();
+            
+            if (!groups) {
+                document.getElementById('joinError').style.display = 'block';
+                joinErrorText.textContent = 'Keine Gruppe mit diesem Code gefunden';
+                throw new Error('Group not found');
+            }
+            
+            const groupId = Object.keys(groups)[0];
+            const group = groups[groupId];
+            
+            // Check if user is already a member
+            if (group.members && group.members[currentUser.uid]) {
+                showNotification('Info', 'Du bist bereits Mitglied dieser Gruppe', 'info');
+                enterGroup(groupId, 'private', group);
+                return;
+            }
+            
+            // Add user to group
+            const updates = {};
+            updates[`groups/private/${groupId}/members/${currentUser.uid}`] = {
+                name: currentUser.displayName,
+                email: currentUser.email,
+                joinedAt: Date.now(),
+                role: 'member'
+            };
+            
+            updates[`userGroups/${currentUser.uid}/private/${groupId}`] = true;
+            
+            await db.ref().update(updates);
+            
+            showNotification('Beigetreten', `Du bist ${group.name} beigetreten`, 'success');
+            joinCodeInput.value = '';
+            document.getElementById('joinError').style.display = 'none';
+            enterGroup(groupId, 'private', group);
+            
+        } catch (error) {
+            console.error('Join group error:', error);
+            if (error.message !== 'Group not found') {
                 showNotification('Fehler', 'Fehler beim Beitreten der Gruppe', 'error');
-            });
+            }
+        } finally {
+            // Re-enable button
+            isJoiningGroup = false;
+            joinGroupBtn.disabled = false;
+            document.getElementById('joinLoadingSpinner').style.display = 'none';
+            document.getElementById('joinButtonText').textContent = 'Beitreten';
+        }
     });
     
     cancelJoin.addEventListener('click', () => {
@@ -2194,16 +2424,7 @@ function setupJoinPrivateForm() {
     });
 }
 
-function generateGroupCode() {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let code = '';
-    for (let i = 0; i < 6; i++) {
-        code += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return code;
-}
-
-function createGroup(name, description, type, code = null) {
+async function createGroup(name, description, type, code = null) {
     const groupId = db.ref(`groups/${type}`).push().key;
     const finalCode = type === 'private' ? (code || generateGroupCode()) : null;
     
@@ -2232,30 +2453,16 @@ function createGroup(name, description, type, code = null) {
     updates[`groups/${type}/${groupId}`] = groupData;
     updates[`userGroups/${currentUser.uid}/${type}/${groupId}`] = true;
     
-    db.ref().update(updates)
-        .then(() => {
-            showNotification('Gruppe erstellt', `${name} wurde erfolgreich erstellt`, 'success');
-            
-            if (type === 'private' && finalCode) {
-                showNotification('Einladungscode', `Code: ${finalCode}`, 'info');
-            }
-            
-            // Clear form
-            const groupNameInput = document.getElementById('groupName');
-            const groupDescriptionInput = document.getElementById('groupDescription');
-            const groupCodeInput = document.getElementById('groupCode');
-            
-            if (groupNameInput) groupNameInput.value = '';
-            if (groupDescriptionInput) groupDescriptionInput.value = '';
-            if (groupCodeInput) groupCodeInput.value = '';
-            
-            // Enter group
-            enterGroup(groupId, type, groupData);
-        })
-        .catch(error => {
-            console.error('Create group error:', error);
-            showNotification('Fehler', 'Gruppe konnte nicht erstellt werden', 'error');
-        });
+    await db.ref().update(updates);
+    
+    showNotification('Gruppe erstellt', `${name} wurde erfolgreich erstellt`, 'success');
+    
+    if (type === 'private' && finalCode) {
+        showNotification('Einladungscode', `Code: ${finalCode}`, 'info');
+    }
+    
+    // Enter group
+    enterGroup(groupId, type, groupData);
 }
 
 // Chat Functionality
