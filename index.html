@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ConnectChat Pro - Ultimate Chat Platform</title>
+<title>ConnectChat PRO - Ultimate Chat Platform</title>
 
 <!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -37,11 +37,6 @@
     --border-radius: 16px;
     --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    
-    /* Provider Colors */
-    --google: #4285F4;
-    --microsoft: #00A4EF;
-    --apple: #000000;
 }
 
 body {
@@ -143,19 +138,42 @@ body {
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
 }
 
+.login-btn:active {
+    transform: translateY(-1px);
+}
+
+/* Provider-specific styles mit echten Farben */
 .btn-google {
-    background: var(--google);
-    color: white;
+    background: #ffffff;
+    color: #333333;
+    border: 1px solid #dadce0;
+}
+
+.btn-google:hover {
+    background: #f8f9fa;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
 }
 
 .btn-microsoft {
-    background: var(--microsoft);
-    color: white;
+    background: #2f2f2f;
+    color: #ffffff;
+    border: 1px solid #5e5e5e;
+}
+
+.btn-microsoft:hover {
+    background: #3a3a3a;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
 }
 
 .btn-apple {
-    background: var(--apple);
-    color: white;
+    background: #000000;
+    color: #ffffff;
+    border: 1px solid #333333;
+}
+
+.btn-apple:hover {
+    background: #1a1a1a;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
 }
 
 .login-btn .provider-icon {
@@ -164,6 +182,16 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.login-btn .provider-name {
+    flex: 1;
+    text-align: left;
+}
+
+.provider-logo {
+    width: 20px;
+    height: 20px;
 }
 
 .privacy-note {
@@ -197,16 +225,7 @@ body {
     box-shadow: var(--shadow);
 }
 
-/* Sidebar */
-.sidebar {
-    width: var(--sidebar-width);
-    background: rgba(15, 23, 42, 0.9);
-    border-right: 1px solid rgba(255, 255, 255, 0.05);
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-}
-
+/* User Profile */
 .user-profile {
     padding: 25px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.05);
@@ -234,6 +253,7 @@ body {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: none;
 }
 
 .user-info {
@@ -256,29 +276,6 @@ body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
-
-.user-status {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    font-size: 0.8rem;
-    color: var(--success);
-    margin-top: 4px;
-}
-
-.status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--success);
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
 }
 
 /* Navigation */
@@ -350,14 +347,6 @@ body {
     margin-left: auto;
     min-width: 20px;
     text-align: center;
-}
-
-/* Main Content */
-.main-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
 }
 
 /* Header */
@@ -542,87 +531,6 @@ body {
     border-radius: 20px;
 }
 
-/* Contacts List */
-.contacts-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 20px;
-}
-
-.contact-item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 16px 20px;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    transition: var(--transition);
-}
-
-.contact-item:hover {
-    background: rgba(255, 255, 255, 0.05);
-    transform: translateX(5px);
-}
-
-.contact-avatar {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    color: white;
-}
-
-.contact-info {
-    flex: 1;
-}
-
-.contact-name {
-    font-weight: 600;
-    font-size: 1rem;
-    margin-bottom: 4px;
-}
-
-.contact-status {
-    font-size: 0.85rem;
-    color: var(--gray);
-}
-
-.contact-actions {
-    display: flex;
-    gap: 8px;
-}
-
-.action-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--light);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--transition);
-}
-
-.action-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    transform: translateY(-2px);
-}
-
-.action-btn.blocked {
-    background: rgba(239, 68, 68, 0.15);
-    color: var(--danger);
-    border-color: rgba(239, 68, 68, 0.3);
-}
-
 /* Chat Container */
 .chat-container {
     display: none;
@@ -746,227 +654,6 @@ body {
     box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
 }
 
-/* Admin Controls */
-.admin-controls {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    display: flex;
-    gap: 8px;
-}
-
-.admin-btn {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--light);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: var(--transition);
-}
-
-.admin-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-}
-
-.admin-btn.warn {
-    color: var(--warning);
-    background: rgba(245, 158, 11, 0.1);
-    border-color: rgba(245, 158, 11, 0.2);
-}
-
-.admin-btn.ban {
-    color: var(--danger);
-    background: rgba(239, 68, 68, 0.1);
-    border-color: rgba(239, 68, 68, 0.2);
-}
-
-/* Modals */
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.9);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 3000;
-    backdrop-filter: blur(10px);
-}
-
-.modal.show {
-    display: flex;
-}
-
-.modal-content {
-    background: rgba(15, 23, 42, 0.98);
-    border-radius: var(--border-radius);
-    padding: 40px;
-    width: 90%;
-    max-width: 600px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
-    animation: modalIn 0.4s ease-out;
-}
-
-@keyframes modalIn {
-    from { opacity: 0; transform: scale(0.95) translateY(20px); }
-    to { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-.modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 30px;
-}
-
-.modal-title {
-    font-size: 1.8rem;
-    font-weight: 800;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.close-btn {
-    background: none;
-    border: none;
-    color: var(--gray);
-    cursor: pointer;
-    padding: 10px;
-    border-radius: 10px;
-    transition: var(--transition);
-}
-
-.close-btn:hover {
-    background: rgba(255, 255, 255, 0.05);
-    color: var(--light);
-}
-
-.form-group {
-    margin-bottom: 24px;
-}
-
-.form-label {
-    display: block;
-    margin-bottom: 10px;
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--light);
-}
-
-.form-input {
-    width: 100%;
-    padding: 14px 18px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 14px;
-    color: var(--light);
-    font-size: 1rem;
-    outline: none;
-    transition: var(--transition);
-}
-
-.form-input:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
-}
-
-.form-textarea {
-    min-height: 120px;
-    resize: vertical;
-}
-
-.form-actions {
-    display: flex;
-    gap: 15px;
-    margin-top: 40px;
-}
-
-.form-actions .btn {
-    flex: 1;
-    padding: 14px 24px;
-    font-size: 1rem;
-}
-
-/* Members Management */
-.members-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 20px;
-    max-height: 400px;
-    overflow-y: auto;
-}
-
-.member-item {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 16px 20px;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 14px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.member-avatar {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--primary), var(--secondary));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-    color: white;
-}
-
-.member-info {
-    flex: 1;
-}
-
-.member-name {
-    font-weight: 600;
-    font-size: 1rem;
-    margin-bottom: 4px;
-}
-
-.member-role {
-    display: inline-block;
-    font-size: 0.8rem;
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-weight: 600;
-}
-
-.role-owner {
-    background: rgba(99, 102, 241, 0.2);
-    color: var(--primary);
-}
-
-.role-admin {
-    background: rgba(245, 158, 11, 0.2);
-    color: var(--warning);
-}
-
-.role-member {
-    background: rgba(100, 116, 139, 0.2);
-    color: var(--gray);
-}
-
-.member-actions {
-    display: flex;
-    gap: 8px;
-}
-
 /* Notifications */
 .notification {
     position: fixed;
@@ -1038,35 +725,6 @@ body {
     line-height: 1.5;
 }
 
-/* Dev Controls */
-.dev-controls {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    z-index: 1000;
-}
-
-.dev-btn {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--danger), #dc2626);
-    color: white;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    transition: var(--transition);
-    box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4);
-}
-
-.dev-btn:hover {
-    transform: scale(1.1) rotate(90deg);
-    box-shadow: 0 15px 40px rgba(239, 68, 68, 0.6);
-}
-
 /* Scrollbar */
 ::-webkit-scrollbar {
     width: 10px;
@@ -1084,73 +742,6 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.2);
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-    .chat-app {
-        height: 100vh;
-        border-radius: 0;
-    }
-    
-    .sidebar {
-        width: 280px;
-    }
-    
-    .groups-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    }
-}
-
-@media (max-width: 768px) {
-    body {
-        padding: 0;
-    }
-    
-    .chat-app {
-        flex-direction: column;
-    }
-    
-    .sidebar {
-        width: 100%;
-        height: auto;
-    }
-    
-    .sidebar-nav {
-        flex-direction: row;
-        overflow-x: auto;
-        padding: 15px;
-    }
-    
-    .nav-section {
-        margin-bottom: 0;
-        margin-right: 20px;
-    }
-    
-    .nav-title {
-        display: none;
-    }
-    
-    .nav-item {
-        padding: 12px;
-        flex-direction: column;
-        text-align: center;
-        min-width: 80px;
-    }
-    
-    .nav-item span:not(.nav-icon) {
-        font-size: 0.8rem;
-    }
-    
-    .badge {
-        position: absolute;
-        top: 5px;
-        right: 5px;
-    }
-    
-    .groups-grid {
-        grid-template-columns: 1fr;
-    }
 }
 </style>
 </head>
@@ -1171,32 +762,35 @@ body {
     <div class="login-options">
         <button class="login-btn btn-google" id="googleLoginBtn">
             <div class="provider-icon">
-                <svg viewBox="0 0 24 24" width="24" height="24">
-                    <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                    <path fill="currentColor" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                    <path fill="currentColor" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-                    <path fill="currentColor" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+                <svg class="provider-logo" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                 </svg>
             </div>
-            <span>Mit Google anmelden</span>
+            <span class="provider-name">Mit Google anmelden</span>
         </button>
         
         <button class="login-btn btn-microsoft" id="microsoftLoginBtn">
             <div class="provider-icon">
-                <svg viewBox="0 0 24 24" width="24" height="24">
-                    <path fill="currentColor" d="M0 0h11.3v11.3H0zM12.7 0H24v11.3H12.7zM0 12.7h11.3V24H0zM12.7 12.7H24V24H12.7z"/>
+                <svg class="provider-logo" viewBox="0 0 24 24">
+                    <path fill="#f25022" d="M0 0h11.3v11.3H0z"/>
+                    <path fill="#00a4ef" d="M12.7 0H24v11.3H12.7z"/>
+                    <path fill="#7fba00" d="M0 12.7h11.3V24H0z"/>
+                    <path fill="#ffb900" d="M12.7 12.7H24V24H12.7z"/>
                 </svg>
             </div>
-            <span>Mit Microsoft anmelden</span>
+            <span class="provider-name">Mit Microsoft anmelden</span>
         </button>
         
         <button class="login-btn btn-apple" id="appleLoginBtn">
             <div class="provider-icon">
-                <svg viewBox="0 0 24 24" width="24" height="24">
-                    <path fill="currentColor" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.31-2.33 1.05-3.11z"/>
+                <svg class="provider-logo" viewBox="0 0 24 24">
+                    <path fill="#FFFFFF" d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.31-2.33 1.05-3.11z"/>
                 </svg>
             </div>
-            <span>Mit Apple anmelden</span>
+            <span class="provider-name">Mit Apple anmelden</span>
         </button>
     </div>
     
@@ -1219,12 +813,8 @@ body {
                 <img id="userAvatarImg" alt="User Avatar">
             </div>
             <div class="user-info">
-                <div class="user-name" id="userName"></div>
-                <div class="user-email" id="userEmail"></div>
-                <div class="user-status">
-                    <div class="status-dot"></div>
-                    <span>Online</span>
-                </div>
+                <div class="user-name" id="userName">Gast</div>
+                <div class="user-email" id="userEmail">Wird geladen...</div>
             </div>
         </div>
         
@@ -1248,20 +838,6 @@ body {
             </div>
             
             <div class="nav-section">
-                <div class="nav-title">Kontakte</div>
-                <a href="#" class="nav-item" data-page="contacts">
-                    <span class="nav-icon material-icons-outlined">contacts</span>
-                    <span>Alle Kontakte</span>
-                    <span class="badge" id="contactsBadge">0</span>
-                </a>
-                <a href="#" class="nav-item" data-page="blocked">
-                    <span class="nav-icon material-icons-outlined">block</span>
-                    <span>Geblockt</span>
-                    <span class="badge" id="blockedBadge">0</span>
-                </a>
-            </div>
-            
-            <div class="nav-section">
                 <div class="nav-title">Admin</div>
                 <a href="#" class="nav-item" data-page="createGroup">
                     <span class="nav-icon material-icons-outlined">add_circle</span>
@@ -1270,10 +846,6 @@ body {
                 <a href="#" class="nav-item" data-page="joinPrivate">
                     <span class="nav-icon material-icons-outlined">key</span>
                     <span>Privaten beitreten</span>
-                </a>
-                <a href="#" class="nav-item" data-page="devTools">
-                    <span class="nav-icon material-icons-outlined">admin_panel_settings</span>
-                    <span>Dev Tools</span>
                 </a>
             </div>
         </div>
@@ -1311,43 +883,7 @@ body {
                 <h2>Öffentliche Gruppen</h2>
                 <p>Entdecke öffentliche Gruppen zu verschiedenen Themen</p>
                 <div class="groups-grid" id="publicGroupsGrid">
-                    <!-- Loaded dynamically -->
-                </div>
-            </div>
-            
-            <!-- Private Groups -->
-            <div id="privatePage" class="page">
-                <h2>Private Gruppen</h2>
-                <p>Deine privaten Gruppen mit Einladungscode</p>
-                <div class="groups-grid" id="privateGroupsGrid">
-                    <!-- Loaded dynamically -->
-                </div>
-            </div>
-            
-            <!-- My Groups -->
-            <div id="myGroupsPage" class="page">
-                <h2>Meine Gruppen</h2>
-                <p>Alle Gruppen, in denen du Mitglied bist</p>
-                <div class="groups-grid" id="myGroupsGrid">
-                    <!-- Loaded dynamically -->
-                </div>
-            </div>
-            
-            <!-- Contacts -->
-            <div id="contactsPage" class="page">
-                <h2>Kontakte</h2>
-                <p>Alle Chat-Benutzer - Direktnachrichten möglich</p>
-                <div class="contacts-grid" id="contactsList">
-                    <!-- Loaded dynamically -->
-                </div>
-            </div>
-            
-            <!-- Blocked Users -->
-            <div id="blockedPage" class="page">
-                <h2>Geblockte Benutzer</h2>
-                <p>Benutzer, die du blockiert hast</p>
-                <div class="contacts-grid" id="blockedList">
-                    <!-- Loaded dynamically -->
+                    <!-- Groups will load here -->
                 </div>
             </div>
             
@@ -1381,88 +917,10 @@ body {
                 </div>
             </div>
             
-            <!-- Join Private Group -->
-            <div id="joinPrivatePage" class="page">
-                <h2>Privaten Raum beitreten</h2>
-                <p>Gib den Einladungscode ein, um einem privaten Raum beizutreten</p>
-                <div class="form-group">
-                    <label class="form-label">Einladungscode</label>
-                    <input type="text" class="form-input" id="joinCode" placeholder="6-stelliger Code (z.B. ABC123)">
-                </div>
-                <div class="form-actions">
-                    <button class="btn btn-secondary" id="cancelJoin">Abbrechen</button>
-                    <button class="btn btn-primary" id="joinGroupBtn">Beitreten</button>
-                </div>
-            </div>
-            
-            <!-- Dev Tools -->
-            <div id="devToolsPage" class="page">
-                <h2>Developer Tools</h2>
-                <p style="color: var(--warning); margin-bottom: 30px;">
-                    <strong>Nur für lzhenwei76@gmail.com zugänglich</strong> - Volle Admin-Kontrolle über das System
-                </p>
-                
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 30px;">
-                    <div style="background: rgba(255, 255, 255, 0.03); padding: 25px; border-radius: var(--border-radius); border: 1px solid rgba(255, 255, 255, 0.05);">
-                        <h3 style="margin-bottom: 20px; color: var(--primary);">User Management</h3>
-                        <div class="form-group">
-                            <label class="form-label">User ID</label>
-                            <input type="text" class="form-input" id="targetUserId" placeholder="User ID zum Bearbeiten">
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Aktion</label>
-                            <select class="form-input form-select" id="userAction">
-                                <option value="">Aktion auswählen...</option>
-                                <option value="warn">Warnung senden</option>
-                                <option value="temp_ban">Temporär bannen (24h)</option>
-                                <option value="perm_ban">Permanent bannen</option>
-                                <option value="unban">Entbannen</option>
-                                <option value="make_admin">Zum Admin machen</option>
-                                <option value="remove_admin">Admin entfernen</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label class="form-label">Grund (optional)</label>
-                            <textarea class="form-input form-textarea" id="actionReason" placeholder="Grund für die Aktion"></textarea>
-                        </div>
-                        <button class="btn btn-danger" id="executeAction" style="width: 100%;">Aktion ausführen</button>
-                    </div>
-                    
-                    <div style="background: rgba(255, 255, 255, 0.03); padding: 25px; border-radius: var(--border-radius); border: 1px solid rgba(255, 255, 255, 0.05);">
-                        <h3 style="margin-bottom: 20px; color: var(--primary);">System Tools</h3>
-                        <div style="display: flex; flex-direction: column; gap: 15px;">
-                            <button class="btn btn-secondary" id="clearAllMessages">
-                                <span class="material-icons-outlined">delete_sweep</span>
-                                Alle Nachrichten löschen
-                            </button>
-                            <button class="btn btn-secondary" id="exportAllData">
-                                <span class="material-icons-outlined">download</span>
-                                Alle Daten exportieren
-                            </button>
-                            <button class="btn btn-secondary" id="viewSystemLogs">
-                                <span class="material-icons-outlined">list_alt</span>
-                                System Logs anzeigen
-                            </button>
-                            <button class="btn btn-danger" id="resetSystem">
-                                <span class="material-icons-outlined">restart_alt</span>
-                                System zurücksetzen
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div style="margin-top: 40px;">
-                    <h3 style="margin-bottom: 20px;">Banned Users</h3>
-                    <div class="contacts-grid" id="bannedUsersList">
-                        <!-- Loaded dynamically -->
-                    </div>
-                </div>
-            </div>
-            
             <!-- Chat Container -->
             <div class="chat-container" id="chatContainer">
                 <div class="messages-container" id="messagesContainer">
-                    <!-- Messages loaded dynamically -->
+                    <!-- Messages will load here -->
                 </div>
                 <div class="chat-input-container">
                     <div class="input-wrapper">
@@ -1477,36 +935,6 @@ body {
     </div>
 </div>
 
-<!-- Group Management Modal -->
-<div class="modal" id="groupManagementModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2 class="modal-title">Gruppenverwaltung</h2>
-            <button class="close-btn" id="closeGroupManagement">
-                <span class="material-icons-outlined">close</span>
-            </button>
-        </div>
-        <div id="groupManagementContent">
-            <!-- Loaded dynamically -->
-        </div>
-    </div>
-</div>
-
-<!-- User Profile Modal -->
-<div class="modal" id="userProfileModal">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h2 class="modal-title">Benutzerprofil</h2>
-            <button class="close-btn" id="closeUserProfile">
-                <span class="material-icons-outlined">close</span>
-            </button>
-        </div>
-        <div id="userProfileContent">
-            <!-- Loaded dynamically -->
-        </div>
-    </div>
-</div>
-
 <!-- Notification -->
 <div class="notification" id="notification">
     <div class="notification-icon">
@@ -1516,13 +944,6 @@ body {
         <div class="notification-title" id="notificationTitle">Erfolg</div>
         <div class="notification-text" id="notificationText">Nachricht gesendet</div>
     </div>
-</div>
-
-<!-- Dev Control Button -->
-<div class="dev-controls" id="devControls" style="display: none;">
-    <button class="dev-btn" id="devMenuBtn">
-        <span class="material-icons-outlined">admin_panel_settings</span>
-    </button>
 </div>
 
 <script>
@@ -1547,8 +968,6 @@ let currentUser = null;
 let currentGroup = null;
 let currentGroupListener = null;
 let sentMessageIds = new Set();
-let blockedUsers = new Set();
-let userContacts = new Set();
 const DEV_EMAIL = "lzhenwei76@gmail.com";
 
 // DOM Elements
@@ -1558,8 +977,7 @@ const googleLoginBtn = document.getElementById('googleLoginBtn');
 const microsoftLoginBtn = document.getElementById('microsoftLoginBtn');
 const appleLoginBtn = document.getElementById('appleLoginBtn');
 const logoutBtn = document.getElementById('logoutBtn');
-const devControls = document.getElementById('devControls');
-const devMenuBtn = document.getElementById('devMenuBtn');
+const refreshBtn = document.getElementById('refreshBtn');
 
 // Notification System
 function showNotification(title, text, type = 'info') {
@@ -1594,7 +1012,549 @@ function showNotification(title, text, type = 'info') {
     }, 3000);
 }
 
-// Generate Group Code
+// Check if User is Developer
+function isDeveloper() {
+    return currentUser && currentUser.email === DEV_EMAIL;
+}
+
+// Safe User Data Loading
+function loadUserData() {
+    if (!currentUser) {
+        console.log('No current user to load data for');
+        return;
+    }
+    
+    console.log('Loading user data for:', currentUser.uid);
+    
+    try {
+        // Update UI elements safely
+        const userNameElement = document.getElementById('userName');
+        const userEmailElement = document.getElementById('userEmail');
+        const userAvatarElement = document.getElementById('userAvatar');
+        const userAvatarImg = document.getElementById('userAvatarImg');
+        
+        if (userNameElement) {
+            userNameElement.textContent = currentUser.displayName || 'Unbekannter Benutzer';
+        }
+        
+        if (userEmailElement) {
+            userEmailElement.textContent = currentUser.email || 'Keine Email';
+        }
+        
+        if (userAvatarElement && userAvatarImg) {
+            if (currentUser.photoURL) {
+                userAvatarImg.src = currentUser.photoURL;
+                userAvatarImg.style.display = 'block';
+                userAvatarElement.textContent = '';
+            } else {
+                userAvatarImg.style.display = 'none';
+                const initials = currentUser.displayName ? 
+                    currentUser.displayName.charAt(0).toUpperCase() : '?';
+                userAvatarElement.textContent = initials;
+            }
+        }
+        
+        // Save user data to database
+        const userData = {
+            uid: currentUser.uid,
+            email: currentUser.email,
+            displayName: currentUser.displayName,
+            photoURL: currentUser.photoURL,
+            lastLogin: Date.now(),
+            isVerified: true,
+            isDeveloper: isDeveloper()
+        };
+        
+        db.ref(`users/${currentUser.uid}`).set(userData)
+            .then(() => {
+                console.log('User data saved successfully');
+            })
+            .catch(error => {
+                console.error('Error saving user data:', error);
+            });
+        
+        // Update online status
+        const userStatusRef = db.ref(`userStatus/${currentUser.uid}`);
+        userStatusRef.set({
+            status: 'online',
+            lastSeen: Date.now()
+        });
+        
+        // Load initial data
+        loadPublicGroups();
+        
+    } catch (error) {
+        console.error('Error in loadUserData:', error);
+        showNotification('Fehler', 'Benutzerdaten konnten nicht geladen werden', 'error');
+    }
+}
+
+// Login Providers
+function initializeLoginButtons() {
+    // Google Login
+    if (googleLoginBtn) {
+        googleLoginBtn.addEventListener('click', () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+            provider.addScope('profile');
+            provider.addScope('email');
+            signInWithProvider(provider, 'Google');
+        });
+    }
+    
+    // Microsoft Login
+    if (microsoftLoginBtn) {
+        microsoftLoginBtn.addEventListener('click', () => {
+            const provider = new firebase.auth.OAuthProvider('microsoft.com');
+            provider.setCustomParameters({
+                tenant: 'common',
+                prompt: 'select_account'
+            });
+            signInWithProvider(provider, 'Microsoft');
+        });
+    }
+    
+    // Apple Login
+    if (appleLoginBtn) {
+        appleLoginBtn.addEventListener('click', () => {
+            const provider = new firebase.auth.OAuthProvider('apple.com');
+            provider.addScope('email');
+            provider.addScope('name');
+            signInWithProvider(provider, 'Apple');
+        });
+    }
+    
+    // Logout Button
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            auth.signOut().then(() => {
+                currentUser = null;
+                chatApp.style.display = 'none';
+                loginScreen.style.display = 'block';
+                showNotification('Abgemeldet', 'Du wurdest erfolgreich abgemeldet', 'info');
+            });
+        });
+    }
+    
+    // Refresh Button
+    if (refreshBtn) {
+        refreshBtn.addEventListener('click', () => {
+            if (currentGroup) {
+                loadMessages(currentGroup.id, currentGroup.type);
+            } else {
+                loadPublicGroups();
+            }
+            showNotification('Aktualisiert', 'Daten wurden aktualisiert', 'success');
+        });
+    }
+}
+
+function signInWithProvider(provider, providerName) {
+    console.log(`Signing in with ${providerName}...`);
+    
+    auth.signInWithPopup(provider)
+        .then((result) => {
+            console.log(`${providerName} login successful:`, result.user);
+            currentUser = result.user;
+            
+            // Update UI
+            loginScreen.style.display = 'none';
+            chatApp.style.display = 'flex';
+            
+            if (isDeveloper()) {
+                showNotification('Willkommen Developer!', 'Du hast volle Admin-Rechte', 'warning');
+            } else {
+                showNotification('Erfolgreich angemeldet', `Willkommen, ${currentUser.displayName}!`, 'success');
+            }
+            
+            loadUserData();
+        })
+        .catch((error) => {
+            console.error(`${providerName} login error:`, error);
+            
+            let errorMessage = error.message;
+            if (error.code === 'auth/account-exists-with-different-credential') {
+                errorMessage = 'Dieses Konto existiert bereits mit einer anderen Anmeldemethode.';
+            } else if (error.code === 'auth/popup-blocked') {
+                errorMessage = 'Popup wurde blockiert. Bitte erlaube Popups für diese Seite.';
+            } else if (error.code === 'auth/popup-closed-by-user') {
+                errorMessage = 'Login wurde abgebrochen.';
+            } else if (error.code === 'auth/unauthorized-domain') {
+                errorMessage = 'Diese Domain ist nicht autorisiert. Bitte localhost verwenden.';
+            }
+            
+            showNotification(`${providerName} Login fehlgeschlagen`, errorMessage, 'error');
+        });
+}
+
+// Navigation
+function initializeNavigation() {
+    const navItems = document.querySelectorAll('.nav-item');
+    const pages = document.querySelectorAll('.page');
+    
+    navItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Update active nav item
+            navItems.forEach(nav => nav.classList.remove('active'));
+            item.classList.add('active');
+            
+            // Show corresponding page
+            const page = item.dataset.page;
+            showPage(page);
+        });
+    });
+}
+
+function showPage(page) {
+    const pages = document.querySelectorAll('.page');
+    const chatContainer = document.getElementById('chatContainer');
+    
+    // Hide all pages and chat
+    pages.forEach(p => {
+        p.classList.remove('active');
+        p.style.display = 'none';
+    });
+    
+    if (chatContainer) {
+        chatContainer.style.display = 'none';
+    }
+    
+    // Show selected page
+    const pageElement = document.getElementById(`${page}Page`);
+    if (pageElement) {
+        pageElement.style.display = 'block';
+        pageElement.classList.add('active');
+        
+        // Update header
+        updateHeader(page);
+        
+        // Load data if needed
+        switch(page) {
+            case 'public':
+                loadPublicGroups();
+                break;
+            case 'createGroup':
+                setupCreateGroupForm();
+                break;
+        }
+    }
+}
+
+function updateHeader(page) {
+    const headerTitle = document.getElementById('headerTitle');
+    const headerSubtitle = document.getElementById('headerSubtitle');
+    const headerIcon = document.getElementById('headerIcon');
+    
+    if (!headerTitle || !headerSubtitle || !headerIcon) return;
+    
+    switch(page) {
+        case 'public':
+            headerTitle.textContent = 'Öffentliche Gruppen';
+            headerSubtitle.textContent = 'Wähle eine Gruppe aus, um dem Chat beizutreten';
+            headerIcon.textContent = 'public';
+            break;
+        case 'private':
+            headerTitle.textContent = 'Private Gruppen';
+            headerSubtitle.textContent = 'Deine privaten Gruppen mit Einladungscode';
+            headerIcon.textContent = 'lock';
+            break;
+        case 'myGroups':
+            headerTitle.textContent = 'Meine Gruppen';
+            headerSubtitle.textContent = 'Alle Gruppen, in denen du Mitglied bist';
+            headerIcon.textContent = 'groups';
+            break;
+        case 'createGroup':
+            headerTitle.textContent = 'Gruppe erstellen';
+            headerSubtitle.textContent = 'Erstelle eine neue öffentliche oder private Gruppe';
+            headerIcon.textContent = 'add_circle';
+            break;
+        case 'joinPrivate':
+            headerTitle.textContent = 'Privaten Raum beitreten';
+            headerSubtitle.textContent = 'Gib den Einladungscode ein, um einem privaten Raum beizutreten';
+            headerIcon.textContent = 'key';
+            break;
+    }
+}
+
+// Groups Functions
+function loadPublicGroups() {
+    const publicGroupsGrid = document.getElementById('publicGroupsGrid');
+    if (!publicGroupsGrid) return;
+    
+    publicGroupsGrid.innerHTML = '<p>Lade Gruppen...</p>';
+    
+    db.ref('groups/public').once('value').then(snapshot => {
+        const groups = snapshot.val();
+        
+        if (!groups || Object.keys(groups).length === 0) {
+            publicGroupsGrid.innerHTML = `
+                <div style="text-align: center; padding: 40px; grid-column: 1 / -1;">
+                    <span class="material-icons-outlined" style="font-size: 60px; color: var(--gray); margin-bottom: 20px;">public</span>
+                    <h3>Keine öffentlichen Gruppen</h3>
+                    <p style="color: var(--gray);">Es wurden noch keine öffentlichen Gruppen erstellt.</p>
+                    <button class="btn btn-primary" onclick="showPage('createGroup')" style="margin-top: 20px;">
+                        <span class="material-icons-outlined">add</span>
+                        Erste Gruppe erstellen
+                    </button>
+                </div>
+            `;
+            return;
+        }
+        
+        publicGroupsGrid.innerHTML = '';
+        Object.entries(groups).forEach(([groupId, group]) => {
+            const groupCard = createGroupCard(groupId, group, 'public');
+            publicGroupsGrid.appendChild(groupCard);
+        });
+        
+        // Update badge
+        const publicBadge = document.getElementById('publicBadge');
+        if (publicBadge) {
+            publicBadge.textContent = Object.keys(groups).length;
+        }
+    }).catch(error => {
+        console.error('Error loading public groups:', error);
+        publicGroupsGrid.innerHTML = '<p>Fehler beim Laden der Gruppen</p>';
+    });
+}
+
+function createGroupCard(groupId, group, type) {
+    const card = document.createElement('div');
+    card.className = 'group-card';
+    
+    const memberCount = group.members ? Object.keys(group.members).length : 0;
+    
+    card.innerHTML = `
+        <div class="group-header">
+            <div class="group-icon">
+                <span class="material-icons-outlined">${type === 'public' ? 'public' : 'lock'}</span>
+            </div>
+            <div class="group-info">
+                <h3>${group.name || 'Unbenannte Gruppe'}</h3>
+                <p>${group.description || 'Keine Beschreibung'}</p>
+            </div>
+        </div>
+        <div class="group-stats">
+            <div class="stat">
+                <span class="material-icons-outlined" style="font-size: 16px;">people</span>
+                <span>${memberCount} Mitglieder</span>
+            </div>
+            <div class="stat">
+                <span class="material-icons-outlined" style="font-size: 16px;">person</span>
+                <span>${group.ownerName || 'Admin'}</span>
+            </div>
+        </div>
+        ${type === 'private' && group.code ? `<div class="group-admin">Code: ${group.code}</div>` : ''}
+    `;
+    
+    card.addEventListener('click', () => {
+        joinGroup(groupId, type);
+    });
+    
+    return card;
+}
+
+function joinGroup(groupId, type) {
+    if (!currentUser) {
+        showNotification('Fehler', 'Du musst angemeldet sein, um Gruppen beizutreten', 'error');
+        return;
+    }
+    
+    showNotification('Beitreten...', 'Gruppe wird geladen', 'info');
+    
+    const groupRef = db.ref(`groups/${type}/${groupId}`);
+    
+    groupRef.once('value').then(snapshot => {
+        const group = snapshot.val();
+        
+        if (!group) {
+            showNotification('Fehler', 'Gruppe existiert nicht mehr', 'error');
+            return;
+        }
+        
+        // Check if user is already a member
+        if (group.members && group.members[currentUser.uid]) {
+            enterGroup(groupId, type, group);
+            return;
+        }
+        
+        // For public groups, add user as member
+        const updates = {};
+        updates[`groups/${type}/${groupId}/members/${currentUser.uid}`] = {
+            name: currentUser.displayName,
+            email: currentUser.email,
+            joinedAt: Date.now(),
+            role: 'member'
+        };
+        
+        updates[`userGroups/${currentUser.uid}/${type}/${groupId}`] = true;
+        
+        db.ref().update(updates).then(() => {
+            showNotification('Beigetreten', `Du bist ${group.name} beigetreten`, 'success');
+            enterGroup(groupId, type, group);
+        });
+    });
+}
+
+function enterGroup(groupId, type, group) {
+    currentGroup = { id: groupId, type, ...group };
+    
+    // Hide pages, show chat
+    const pages = document.querySelectorAll('.page');
+    const chatContainer = document.getElementById('chatContainer');
+    
+    pages.forEach(p => p.style.display = 'none');
+    if (chatContainer) {
+        chatContainer.style.display = 'flex';
+    }
+    
+    // Update header
+    const headerTitle = document.getElementById('headerTitle');
+    const headerSubtitle = document.getElementById('headerSubtitle');
+    const headerIcon = document.getElementById('headerIcon');
+    
+    if (headerTitle) headerTitle.textContent = group.name || 'Gruppe';
+    if (headerSubtitle) headerSubtitle.textContent = group.description || 'Gruppenchat';
+    if (headerIcon) headerIcon.textContent = type === 'public' ? 'public' : 'lock';
+    
+    // Clear messages
+    const messagesContainer = document.getElementById('messagesContainer');
+    if (messagesContainer) {
+        messagesContainer.innerHTML = '';
+    }
+    
+    const messageInput = document.getElementById('messageInput');
+    if (messageInput) {
+        messageInput.value = '';
+    }
+    
+    sentMessageIds.clear();
+    
+    // Remove old listener
+    if (currentGroupListener) {
+        db.ref(`messages/${type}/${groupId}`).off('child_added', currentGroupListener);
+    }
+    
+    // Load messages
+    loadMessages(groupId, type);
+    
+    // Add message listener
+    currentGroupListener = db.ref(`messages/${type}/${groupId}`).limitToLast(100)
+        .on('child_added', (snapshot) => {
+            const messageId = snapshot.key;
+            const message = snapshot.val();
+            
+            if (!sentMessageIds.has(messageId)) {
+                sentMessageIds.add(messageId);
+                displayMessage(message);
+            }
+        });
+}
+
+function loadMessages(groupId, type) {
+    const messagesContainer = document.getElementById('messagesContainer');
+    if (!messagesContainer) return;
+    
+    db.ref(`messages/${type}/${groupId}`).limitToLast(100).once('value').then(snapshot => {
+        const messages = snapshot.val();
+        
+        if (messages) {
+            Object.entries(messages).forEach(([messageId, message]) => {
+                if (!sentMessageIds.has(messageId)) {
+                    sentMessageIds.add(messageId);
+                    displayMessage(message);
+                }
+            });
+        }
+        
+        // Scroll to bottom
+        setTimeout(() => {
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }, 100);
+    });
+}
+
+function displayMessage(message) {
+    const messagesContainer = document.getElementById('messagesContainer');
+    if (!messagesContainer || !currentUser) return;
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${message.userId === currentUser.uid ? 'message-sent' : 'message-received'}`;
+    
+    const time = new Date(message.timestamp).toLocaleTimeString('de-DE', {
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+    
+    messageDiv.innerHTML = `
+        <div class="message-header">
+            <span class="message-name">${message.userName || 'Unbekannt'}</span>
+            <span class="message-time">${time}</span>
+        </div>
+        <div class="message-bubble">
+            <div class="message-text">${escapeHtml(message.text).replace(/\n/g, '<br>')}</div>
+        </div>
+    `;
+    
+    messagesContainer.appendChild(messageDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
+
+// Group Creation
+function setupCreateGroupForm() {
+    const groupTypeSelect = document.getElementById('groupType');
+    const privateSettings = document.getElementById('privateSettings');
+    const createGroupBtn = document.getElementById('createGroupBtn');
+    const cancelCreate = document.getElementById('cancelCreate');
+    
+    if (!groupTypeSelect || !privateSettings || !createGroupBtn || !cancelCreate) return;
+    
+    // Show/hide private settings
+    groupTypeSelect.addEventListener('change', (e) => {
+        privateSettings.style.display = e.target.value === 'private' ? 'block' : 'none';
+    });
+    
+    // Create group
+    createGroupBtn.addEventListener('click', () => {
+        if (!currentUser || !currentUser.isVerified) {
+            showNotification('Fehler', 'Nur verifizierte Benutzer können Gruppen erstellen', 'error');
+            return;
+        }
+        
+        const name = document.getElementById('groupName')?.value.trim();
+        const description = document.getElementById('groupDescription')?.value.trim();
+        const type = groupTypeSelect.value;
+        
+        if (!name || name.length < 3) {
+            showNotification('Fehler', 'Bitte einen Gruppennamen eingeben (min. 3 Zeichen)', 'error');
+            return;
+        }
+        
+        let code = null;
+        if (type === 'private') {
+            code = document.getElementById('groupCode')?.value.trim().toUpperCase() || generateGroupCode();
+            if (code && code.length !== 6) {
+                showNotification('Fehler', 'Der Code muss 6 Zeichen lang sein', 'error');
+                return;
+            }
+        }
+        
+        createGroup(name, description, type, code);
+    });
+    
+    // Cancel creation
+    cancelCreate.addEventListener('click', () => {
+        showPage('public');
+    });
+}
+
 function generateGroupCode() {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
     let code = '';
@@ -1604,211 +1564,14 @@ function generateGroupCode() {
     return code;
 }
 
-// Check if User is Developer
-function isDeveloper() {
-    return currentUser && currentUser.email === DEV_EMAIL;
-}
-
-// Login Providers
-googleLoginBtn.addEventListener('click', () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    provider.addScope('profile');
-    provider.addScope('email');
-    signInWithProvider(provider);
-});
-
-microsoftLoginBtn.addEventListener('click', () => {
-    const provider = new firebase.auth.OAuthProvider('microsoft.com');
-    provider.setCustomParameters({
-        tenant: 'common',
-        prompt: 'select_account'
-    });
-    signInWithProvider(provider);
-});
-
-appleLoginBtn.addEventListener('click', () => {
-    const provider = new firebase.auth.OAuthProvider('apple.com');
-    provider.addScope('email');
-    provider.addScope('name');
-    signInWithProvider(provider);
-});
-
-function signInWithProvider(provider) {
-    auth.signInWithPopup(provider)
-        .then((result) => {
-            currentUser = result.user;
-            
-            // Save user data
-            const userData = {
-                uid: currentUser.uid,
-                email: currentUser.email,
-                displayName: currentUser.displayName,
-                photoURL: currentUser.photoURL,
-                provider: result.credential.providerId,
-                lastLogin: Date.now(),
-                isVerified: true,
-                isBanned: false,
-                warnings: 0,
-                isDeveloper: currentUser.email === DEV_EMAIL
-            };
-            
-            db.ref(`users/${currentUser.uid}`).set(userData);
-            
-            // Update UI
-            loginScreen.style.display = 'none';
-            chatApp.style.display = 'flex';
-            
-            if (isDeveloper()) {
-                devControls.style.display = 'block';
-                showNotification('Willkommen Developer!', 'Du hast volle Admin-Rechte', 'warning');
-            } else {
-                showNotification('Erfolgreich angemeldet', `Willkommen, ${currentUser.displayName}!`, 'success');
-            }
-            
-            loadUserData();
-            loadPublicGroups();
-            loadContacts();
-        })
-        .catch((error) => {
-            console.error('Login error:', error);
-            showNotification('Anmeldung fehlgeschlagen', error.message, 'error');
-        });
-}
-
-// Logout
-logoutBtn.addEventListener('click', () => {
-    auth.signOut().then(() => {
-        currentUser = null;
-        chatApp.style.display = 'none';
-        devControls.style.display = 'none';
-        loginScreen.style.display = 'block';
-        showNotification('Abgemeldet', 'Du wurdest erfolgreich abgemeldet', 'info');
-    });
-});
-
-// Load User Data
-function loadUserData() {
-    if (!currentUser) return;
-    
-    // Update UI
-    document.getElementById('userName').textContent = currentUser.displayName;
-    document.getElementById('userEmail').textContent = currentUser.email;
-    
-    const userAvatar = document.getElementById('userAvatar');
-    const userAvatarImg = document.getElementById('userAvatarImg');
-    
-    if (currentUser.photoURL) {
-        userAvatarImg.src = currentUser.photoURL;
-        userAvatarImg.style.display = 'block';
-        userAvatar.innerHTML = '';
-    } else {
-        userAvatarImg.style.display = 'none';
-        userAvatar.textContent = currentUser.displayName.charAt(0).toUpperCase();
-    }
-    
-    // Update online status
-    const userStatusRef = db.ref(`userStatus/${currentUser.uid}`);
-    userStatusRef.set({
-        status: 'online',
-        lastSeen: Date.now()
-    });
-    
-    // Load blocked users
-    db.ref(`blockedUsers/${currentUser.uid}`).on('value', (snapshot) => {
-        blockedUsers.clear();
-        const blocked = snapshot.val();
-        if (blocked) {
-            Object.keys(blocked).forEach(userId => blockedUsers.add(userId));
-        }
-        updateBlockedBadge();
-    });
-    
-    // Load contacts
-    db.ref(`contacts/${currentUser.uid}`).on('value', (snapshot) => {
-        userContacts.clear();
-        const contacts = snapshot.val();
-        if (contacts) {
-            Object.keys(contacts).forEach(userId => userContacts.add(userId));
-        }
-        updateContactsBadge();
-    });
-    
-    // Check for warnings
-    db.ref(`users/${currentUser.uid}/warnings`).on('value', (snapshot) => {
-        const warnings = snapshot.val() || 0;
-        if (warnings > 0) {
-            showNotification(`Du hast ${warnings} Verwarnung(en)`, 'Bitte halte dich an die Regeln', 'warning');
-        }
-    });
-}
-
-// Update Badges
-function updateBlockedBadge() {
-    document.getElementById('blockedBadge').textContent = blockedUsers.size;
-}
-
-function updateContactsBadge() {
-    document.getElementById('contactsBadge').textContent = userContacts.size;
-}
-
-// Block/Unblock User
-function blockUser(userId) {
-    if (!currentUser || userId === currentUser.uid) return;
-    
-    db.ref(`blockedUsers/${currentUser.uid}/${userId}`).set(true)
-        .then(() => {
-            showNotification('Benutzer blockiert', 'Du wirst keine Nachrichten mehr von dieser Person erhalten', 'info');
-        });
-}
-
-function unblockUser(userId) {
-    if (!currentUser) return;
-    
-    db.ref(`blockedUsers/${currentUser.uid}/${userId}`).remove()
-        .then(() => {
-            showNotification('Benutzer entblockt', 'Du kannst jetzt wieder Nachrichten erhalten', 'success');
-        });
-}
-
-// Add Contact
-function addContact(userId) {
-    if (!currentUser || userId === currentUser.uid) return;
-    
-    db.ref(`contacts/${currentUser.uid}/${userId}`).set(true)
-        .then(() => {
-            showNotification('Kontakt hinzugefügt', 'Person wurde zu deinen Kontakten hinzugefügt', 'success');
-        });
-}
-
-// Remove Contact
-function removeContact(userId) {
-    if (!currentUser) return;
-    
-    db.ref(`contacts/${currentUser.uid}/${userId}`).remove()
-        .then(() => {
-            showNotification('Kontakt entfernt', 'Person wurde von deinen Kontakten entfernt', 'info');
-        });
-}
-
-// Group Creation with Admin System
 function createGroup(name, description, type, code = null) {
-    if (!currentUser || !currentUser.isVerified) {
-        showNotification('Fehler', 'Nur verifizierte Benutzer können Gruppen erstellen', 'error');
-        return;
-    }
-    
-    if (!name || name.trim() === '') {
-        showNotification('Fehler', 'Bitte einen Gruppennamen eingeben', 'error');
-        return;
-    }
-    
     const groupId = db.ref(`groups/${type}`).push().key;
     const finalCode = type === 'private' ? (code || generateGroupCode()) : null;
     
     const groupData = {
         id: groupId,
-        name: name.trim(),
-        description: description.trim() || `Willkommen in ${name.trim()}!`,
+        name: name,
+        description: description || `Willkommen in ${name}!`,
         type: type,
         code: finalCode,
         ownerId: currentUser.uid,
@@ -1835,251 +1598,122 @@ function createGroup(name, description, type, code = null) {
             showNotification('Gruppe erstellt', `${name} wurde erfolgreich erstellt`, 'success');
             
             if (type === 'private' && finalCode) {
-                showNotification('Einladungscode', `Code: ${finalCode} - Gib diesen Code an Freunde weiter`, 'info');
+                showNotification('Einladungscode', `Code: ${finalCode}`, 'info');
             }
             
             // Clear form
-            document.getElementById('groupName').value = '';
-            document.getElementById('groupDescription').value = '';
-            document.getElementById('groupCode').value = '';
+            const groupNameInput = document.getElementById('groupName');
+            const groupDescriptionInput = document.getElementById('groupDescription');
+            const groupCodeInput = document.getElementById('groupCode');
+            
+            if (groupNameInput) groupNameInput.value = '';
+            if (groupDescriptionInput) groupDescriptionInput.value = '';
+            if (groupCodeInput) groupCodeInput.value = '';
             
             // Enter group
             enterGroup(groupId, type, groupData);
         })
         .catch(error => {
-            showNotification('Fehler', 'Gruppe konnte nicht erstellt werden', 'error');
             console.error('Create group error:', error);
+            showNotification('Fehler', 'Gruppe konnte nicht erstellt werden', 'error');
         });
 }
 
-// Group Management Functions
-function promoteToAdmin(groupId, type, userId) {
-    if (!currentUser) return;
+// Chat Functionality
+function initializeChat() {
+    const messageInput = document.getElementById('messageInput');
+    const sendMessageBtn = document.getElementById('sendMessageBtn');
     
-    const groupRef = db.ref(`groups/${type}/${groupId}`);
+    if (!messageInput || !sendMessageBtn) return;
     
-    groupRef.once('value').then(snapshot => {
-        const group = snapshot.val();
-        
-        if (!group) return;
-        
-        // Check if current user is owner or admin
-        if (group.ownerId !== currentUser.uid && !group.admins?.includes(currentUser.uid)) {
-            showNotification('Fehler', 'Nur Admins können andere zu Admins befördern', 'error');
-            return;
+    // Send message on Enter (but not Shift+Enter)
+    messageInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
         }
-        
-        // Cannot demote owner
-        if (userId === group.ownerId) {
-            showNotification('Fehler', 'Der Gruppenbesitzer kann nicht befördert/entfernt werden', 'error');
-            return;
-        }
-        
-        const updates = {};
-        updates[`groups/${type}/${groupId}/members/${userId}/role`] = 'admin';
-        
-        // Add to admins array
-        const admins = group.admins || [];
-        if (!admins.includes(userId)) {
-            admins.push(userId);
-            updates[`groups/${type}/${groupId}/admins`] = admins;
-        }
-        
-        db.ref().update(updates)
-            .then(() => {
-                showNotification('Befördert', 'Benutzer wurde zum Admin befördert', 'success');
-            });
     });
+    
+    // Auto-resize textarea
+    messageInput.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = Math.min(this.scrollHeight, 150) + 'px';
+    });
+    
+    // Send button
+    sendMessageBtn.addEventListener('click', sendMessage);
 }
 
-function demoteFromAdmin(groupId, type, userId) {
-    if (!currentUser) return;
+function sendMessage() {
+    if (!currentGroup || !currentUser) return;
     
-    const groupRef = db.ref(`groups/${type}/${groupId}`);
+    const messageInput = document.getElementById('messageInput');
+    if (!messageInput) return;
     
-    groupRef.once('value').then(snapshot => {
-        const group = snapshot.val();
-        
-        if (!group) return;
-        
-        // Check if current user is owner
-        if (group.ownerId !== currentUser.uid) {
-            showNotification('Fehler', 'Nur der Gruppenbesitzer kann Admins entfernen', 'error');
-            return;
-        }
-        
-        // Cannot demote owner
-        if (userId === group.ownerId) {
-            showNotification('Fehler', 'Der Gruppenbesitzer kann nicht entfernt werden', 'error');
-            return;
-        }
-        
-        const updates = {};
-        updates[`groups/${type}/${groupId}/members/${userId}/role`] = 'member';
-        
-        // Remove from admins array
-        const admins = group.admins || [];
-        const index = admins.indexOf(userId);
-        if (index > -1) {
-            admins.splice(index, 1);
-            updates[`groups/${type}/${groupId}/admins`] = admins;
-        }
-        
-        db.ref().update(updates)
-            .then(() => {
-                showNotification('Entfernt', 'Admin-Rechte wurden entfernt', 'success');
-            });
-    });
-}
-
-function kickUser(groupId, type, userId) {
-    if (!currentUser) return;
+    const text = messageInput.value.trim();
+    if (!text) return;
     
-    const groupRef = db.ref(`groups/${type}/${groupId}`);
-    
-    groupRef.once('value').then(snapshot => {
-        const group = snapshot.val();
-        
-        if (!group) return;
-        
-        // Check permissions
-        const isOwner = group.ownerId === currentUser.uid;
-        const isAdmin = group.admins?.includes(currentUser.uid);
-        
-        if (!isOwner && !isAdmin) {
-            showNotification('Fehler', 'Nur Admins können Benutzer kicken', 'error');
-            return;
-        }
-        
-        // Cannot kick owner
-        if (userId === group.ownerId) {
-            showNotification('Fehler', 'Der Gruppenbesitzer kann nicht gekickt werden', 'error');
-            return;
-        }
-        
-        // Admins cannot kick other admins (only owner can)
-        const targetIsAdmin = group.admins?.includes(userId);
-        if (targetIsAdmin && !isOwner) {
-            showNotification('Fehler', 'Nur der Besitzer kann Admins kicken', 'error');
-            return;
-        }
-        
-        const updates = {};
-        updates[`groups/${type}/${groupId}/members/${userId}`] = null;
-        updates[`userGroups/${userId}/${type}/${groupId}`] = null;
-        
-        // Remove from admins array if admin
-        if (targetIsAdmin) {
-            const admins = group.admins || [];
-            const index = admins.indexOf(userId);
-            if (index > -1) {
-                admins.splice(index, 1);
-                updates[`groups/${type}/${groupId}/admins`] = admins;
-            }
-        }
-        
-        db.ref().update(updates)
-            .then(() => {
-                showNotification('Gekickt', 'Benutzer wurde aus der Gruppe entfernt', 'success');
-            });
-    });
-}
-
-// Developer Functions
-function warnUser(userId, reason = '') {
-    if (!isDeveloper()) return;
-    
-    db.ref(`users/${userId}/warnings`).transaction((currentWarnings) => {
-        return (currentWarnings || 0) + 1;
-    }).then(() => {
-        // Log the warning
-        const warningData = {
-            userId: userId,
-            warnedBy: currentUser.uid,
-            reason: reason,
-            timestamp: Date.now()
-        };
-        
-        db.ref(`warnings/${userId}`).push(warningData);
-        showNotification('Verwarnung gesendet', `User ${userId} wurde verwarnt`, 'warning');
-    });
-}
-
-function banUser(userId, duration = 'permanent', reason = '') {
-    if (!isDeveloper()) return;
-    
-    const banData = {
-        userId: userId,
-        bannedBy: currentUser.uid,
-        reason: reason,
-        timestamp: Date.now(),
-        duration: duration,
-        status: 'active'
+    const messageId = db.ref(`messages/${currentGroup.type}/${currentGroup.id}`).push().key;
+    const messageData = {
+        text: text,
+        userId: currentUser.uid,
+        userName: currentUser.displayName,
+        userEmail: currentUser.email,
+        timestamp: Date.now()
     };
     
-    if (duration !== 'permanent') {
-        const unbanTime = Date.now() + (parseInt(duration) * 60 * 60 * 1000);
-        banData.unbanAt = unbanTime;
-    }
-    
-    db.ref(`bans/${userId}`).set(banData)
+    db.ref(`messages/${currentGroup.type}/${currentGroup.id}/${messageId}`).set(messageData)
         .then(() => {
-            db.ref(`users/${userId}/isBanned`).set(true);
-            showNotification('User gebannt', `User ${userId} wurde ${duration === 'permanent' ? 'permanent' : 'temporär'} gebannt`, 'error');
+            messageInput.value = '';
+            messageInput.style.height = 'auto';
+        })
+        .catch(error => {
+            console.error('Send message error:', error);
+            showNotification('Fehler', 'Nachricht konnte nicht gesendet werden', 'error');
         });
 }
 
-function unbanUser(userId) {
-    if (!isDeveloper()) return;
+// Initialize everything
+function initializeApp() {
+    console.log('Initializing app...');
     
-    const updates = {};
-    updates[`bans/${userId}`] = null;
-    updates[`users/${userId}/isBanned`] = false;
+    // Initialize login buttons
+    initializeLoginButtons();
     
-    db.ref().update(updates)
-        .then(() => {
-            showNotification('User entbannt', `User ${userId} wurde entbannt`, 'success');
-        });
-}
-
-// Initialize Auth
-auth.onAuthStateChanged((user) => {
-    if (user) {
-        currentUser = user;
-        loginScreen.style.display = 'none';
-        chatApp.style.display = 'flex';
+    // Initialize navigation
+    initializeNavigation();
+    
+    // Initialize chat
+    initializeChat();
+    
+    // Set up group creation form
+    setupCreateGroupForm();
+    
+    // Check auth state
+    auth.onAuthStateChanged((user) => {
+        console.log('Auth state changed:', user ? 'User logged in' : 'No user');
         
-        if (isDeveloper()) {
-            devControls.style.display = 'block';
+        if (user) {
+            currentUser = user;
+            loginScreen.style.display = 'none';
+            chatApp.style.display = 'flex';
+            loadUserData();
+        } else {
+            currentUser = null;
+            chatApp.style.display = 'none';
+            loginScreen.style.display = 'block';
         }
-        
-        loadUserData();
-    } else {
-        currentUser = null;
-        chatApp.style.display = 'none';
-        devControls.style.display = 'none';
-        loginScreen.style.display = 'block';
-    }
-});
+    });
+    
+    showNotification('System bereit', 'Wähle eine Login-Methode um zu starten', 'info');
+}
 
-// Dev Menu
-devMenuBtn.addEventListener('click', () => {
-    showPage('devTools');
-});
+// Start the app when page loads
+window.addEventListener('DOMContentLoaded', initializeApp);
 
-// Note: Due to character limit, I've included the core functionality.
-// The complete implementation would include:
-// 1. All navigation functions
-// 2. Group loading and display
-// 3. Chat functionality
-// 4. Contact management
-// 5. Full admin controls
-// 6. Real-time updates
-
-// These would follow the same pattern as previous versions but with enhanced features.
-
-// Initialize
-showNotification('System bereit', 'Wähle eine Login-Methode um zu starten', 'info');
+// Global helper for group creation
+window.createGroup = createGroup;
+window.showPage = showPage;
 </script>
 </body>
 </html>
