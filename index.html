@@ -2,9 +2,9 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<title>Online Chat</title>
+<title>Global Chat</title>
 
-<!-- Firebase -->
+<!-- Firebase compat -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -21,7 +21,7 @@ body {
 }
 
 .chat-box {
-    width: 380px;
+    width: 400px;
     background: #020617;
     border-radius: 14px;
     display: flex;
@@ -34,6 +34,9 @@ header {
     font-weight: bold;
     background: #020617;
     border-bottom: 1px solid #1e293b;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 #messages {
@@ -48,17 +51,23 @@ header {
 }
 
 .name {
-    color: #38bdf8;
     font-weight: bold;
+}
+
+.time {
+    font-size: 10px;
+    color: #94a3b8;
+    margin-left: 5px;
 }
 
 footer {
     padding: 10px;
     border-top: 1px solid #1e293b;
+    display: flex;
 }
 
-input {
-    width: 100%;
+#input {
+    flex: 1;
     padding: 10px;
     border-radius: 8px;
     border: none;
@@ -66,13 +75,25 @@ input {
     color: white;
     outline: none;
 }
+
+#changeName {
+    margin-left: 5px;
+    background: #64748b;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0 10px;
+    cursor: pointer;
+}
 </style>
 </head>
-
 <body>
 
 <div class="chat-box">
-    <header>💬 Global Chat</header>
+    <header>
+        💬 Global Chat
+        <button id="changeName">Name ändern</button>
+    </header>
 
     <div id="messages"></div>
 
@@ -82,21 +103,24 @@ input {
 </div>
 
 <script>
-/* 🔥 FIREBASE CONFIG (HIER ÄNDERN!) */
+/* 🔑 FIREBASE CONFIG */
 const firebaseConfig = {
-    apiKey: "DEIN_API_KEY",
-    authDomain: "DEIN_PROJEKT.firebaseapp.com",
-    databaseURL: "https://DEIN_PROJEKT-default-rtdb.firebaseio.com",
-    projectId: "DEIN_PROJEKT",
+  apiKey: "AIzaSyASgfGX-RD3i39XeodTBDh3p4cT6rkzPBo",
+  authDomain: "chat-5ac8d.firebaseapp.com",
+  databaseURL: "https://chat-5ac8d-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "chat-5ac8d",
+  storageBucket: "chat-5ac8d.firebasestorage.app",
+  messagingSenderId: "811185278248",
+  appId: "1:811185278248:web:b3e67b65ff49455dacd41d"
 };
 
-/* INIT */
+/* INIT FIREBASE */
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 
-/* NAME MERKEN */
+/* LOCALSTORAGE NAME */
 let username = localStorage.getItem("username");
-if (!username) {
+if(!username){
     username = prompt("Dein Name:");
     localStorage.setItem("username", username);
 }
@@ -104,32 +128,48 @@ if (!username) {
 /* ELEMENTE */
 const input = document.getElementById("input");
 const messages = document.getElementById("messages");
+const changeBtn = document.getElementById("changeName");
 
 /* ENTER ZUM SENDEN */
 input.addEventListener("keydown", e => {
-    if (e.key === "Enter" && input.value.trim() !== "") {
+    if(e.key === "Enter" && input.value.trim() !== ""){
         sendMessage();
     }
 });
 
+/* NAME ÄNDERN */
+changeBtn.addEventListener("click", ()=>{
+    let newName = prompt("Neuer Name:", username);
+    if(newName && newName.trim() !== ""){
+        username = newName.trim();
+        localStorage.setItem("username", username);
+    }
+});
+
 /* SENDEN */
-function sendMessage() {
+function sendMessage(){
+    const color = "#" + Math.floor(Math.random()*16777215).toString(16); // zufällige Farbe
     db.ref("messages").push({
         name: username,
         text: input.value,
-        time: Date.now()
+        time: Date.now(),
+        color: color
     });
     input.value = "";
 }
 
-/* NACHRICHTEN LADEN (BLEIBEN NACH RELOAD) */
-db.ref("messages").limitToLast(100).on("child_added", snapshot => {
-    const data = snapshot.val();
+/* ZEITFORMAT */
+function formatTime(ms){
+    const date = new Date(ms);
+    return date.getHours().toString().padStart(2,"0") + ":" + date.getMinutes().toString().padStart(2,"0");
+}
 
+/* NACHRICHTEN LADEN */
+db.ref("messages").limitToLast(100).on("child_added", snapshot=>{
+    const data = snapshot.val();
     const div = document.createElement("div");
     div.className = "msg";
-    div.innerHTML = `<span class="name">${data.name}:</span> ${data.text}`;
-
+    div.innerHTML = `<span class="name" style="color:${data.color}">${data.name}:</span> ${data.text} <span class="time">${formatTime(data.time)}</span>`;
     messages.appendChild(div);
     messages.scrollTop = messages.scrollHeight;
 });
