@@ -176,6 +176,17 @@ body {
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
 }
 
+.btn-github {
+    background: #24292e;
+    color: #ffffff;
+    border: 1px solid #444d56;
+}
+
+.btn-github:hover {
+    background: #2f363d;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
 .login-btn .provider-icon {
     width: 24px;
     height: 24px;
@@ -688,6 +699,18 @@ body {
     border-radius: 20px;
 }
 
+.group-founder {
+    position: absolute;
+    top: 45px;
+    right: 15px;
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--warning);
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+}
+
 /* Chat Container */
 .chat-container {
     display: none;
@@ -707,6 +730,7 @@ body {
 .message {
     max-width: 75%;
     animation: slideIn 0.3s ease-out;
+    position: relative;
 }
 
 @keyframes slideIn {
@@ -730,6 +754,7 @@ body {
     line-height: 1.5;
     max-width: 100%;
     word-wrap: break-word;
+    position: relative;
 }
 
 .message-sent .message-bubble {
@@ -759,6 +784,41 @@ body {
     font-size: 1rem;
     white-space: pre-wrap;
     word-break: break-word;
+}
+
+/* Message Actions */
+.message-actions {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    display: flex;
+    gap: 5px;
+}
+
+.message:hover .message-actions {
+    opacity: 1;
+}
+
+.message-action-btn {
+    background: rgba(0, 0, 0, 0.5);
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    font-size: 14px;
+    transition: all 0.3s;
+}
+
+.message-action-btn:hover {
+    background: var(--danger);
+    transform: scale(1.1);
 }
 
 /* Chat Input */
@@ -923,6 +983,33 @@ body {
     line-height: 1.6;
 }
 
+/* Group Management */
+.group-management {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    display: flex;
+    gap: 8px;
+}
+
+.group-management-btn {
+    background: rgba(0, 0, 0, 0.3);
+    border: none;
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    transition: all 0.3s;
+}
+
+.group-management-btn:hover {
+    background: var(--danger);
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar {
     width: 10px;
@@ -940,6 +1027,75 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.2);
+}
+
+/* Confirmation Dialog */
+.confirmation-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 5000;
+    backdrop-filter: blur(10px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+}
+
+.confirmation-dialog.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.confirmation-content {
+    background: var(--dark);
+    border-radius: var(--border-radius);
+    padding: 40px;
+    max-width: 500px;
+    width: 90%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+.confirmation-icon {
+    width: 80px;
+    height: 80px;
+    background: rgba(239, 68, 68, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    color: var(--danger);
+    font-size: 2rem;
+}
+
+.confirmation-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.confirmation-text {
+    color: var(--gray);
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.confirmation-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+}
+
+.confirmation-actions .btn {
+    min-width: 120px;
 }
 
 /* Responsive */
@@ -1036,6 +1192,10 @@ body {
     .form-actions {
         flex-direction: column;
     }
+    
+    .message-actions {
+        opacity: 1; /* Immer sichtbar auf mobilen Geräten */
+    }
 }
 
 @media (max-width: 480px) {
@@ -1056,6 +1216,14 @@ body {
     
     .content-area {
         padding: 20px;
+    }
+    
+    .confirmation-content {
+        padding: 25px 20px;
+    }
+    
+    .confirmation-actions {
+        flex-direction: column;
     }
 }
 </style>
@@ -1106,6 +1274,15 @@ body {
                 </svg>
             </div>
             <span class="provider-name">Mit Apple anmelden</span>
+        </button>
+        
+        <button class="login-btn btn-github" id="githubLoginBtn">
+            <div class="provider-icon">
+                <svg class="provider-logo" viewBox="0 0 24 24">
+                    <path fill="#FFFFFF" d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+            </div>
+            <span class="provider-name">Mit GitHub anmelden</span>
         </button>
     </div>
     
@@ -1329,6 +1506,21 @@ body {
     </div>
 </div>
 
+<!-- Confirmation Dialog -->
+<div class="confirmation-dialog" id="confirmationDialog">
+    <div class="confirmation-content">
+        <div class="confirmation-icon">
+            <span class="material-icons-outlined" id="confirmationDialogIcon">warning</span>
+        </div>
+        <h3 class="confirmation-title" id="confirmationDialogTitle">Bestätigung erforderlich</h3>
+        <p class="confirmation-text" id="confirmationDialogText">Bist du sicher, dass du diese Aktion ausführen möchtest?</p>
+        <div class="confirmation-actions">
+            <button class="btn btn-secondary" id="confirmationCancelBtn">Abbrechen</button>
+            <button class="btn btn-danger" id="confirmationConfirmBtn">Bestätigen</button>
+        </div>
+    </div>
+</div>
+
 <script>
 // 🔥 FIREBASE CONFIG
 const firebaseConfig = {
@@ -1354,6 +1546,7 @@ let sentMessageIds = new Set();
 let onlineUsers = {};
 let isCreatingGroup = false;
 let isJoiningGroup = false;
+let pendingDeleteAction = null;
 
 // DOM Elements
 const loginScreen = document.getElementById('loginScreen');
@@ -1361,10 +1554,14 @@ const chatApp = document.getElementById('chatApp');
 const googleLoginBtn = document.getElementById('googleLoginBtn');
 const microsoftLoginBtn = document.getElementById('microsoftLoginBtn');
 const appleLoginBtn = document.getElementById('appleLoginBtn');
+const githubLoginBtn = document.getElementById('githubLoginBtn');
 const logoutBtn = document.getElementById('logoutBtn');
 const refreshBtn = document.getElementById('refreshBtn');
 const onlineCountElement = document.getElementById('onlineCount');
 const onlineCounter = document.getElementById('onlineCounter');
+const confirmationDialog = document.getElementById('confirmationDialog');
+const confirmationCancelBtn = document.getElementById('confirmationCancelBtn');
+const confirmationConfirmBtn = document.getElementById('confirmationConfirmBtn');
 
 // Notification System
 function showNotification(title, text, type = 'info') {
@@ -1398,6 +1595,41 @@ function showNotification(title, text, type = 'info') {
         notification.classList.remove('show');
     }, 3000);
 }
+
+// Confirmation Dialog System
+function showConfirmationDialog(title, text, callback) {
+    const confirmationDialogTitle = document.getElementById('confirmationDialogTitle');
+    const confirmationDialogText = document.getElementById('confirmationDialogText');
+    const confirmationDialogIcon = document.getElementById('confirmationDialogIcon');
+    
+    confirmationDialogTitle.textContent = title;
+    confirmationDialogText.textContent = text;
+    
+    // Set icon based on action type
+    if (text.includes('Nachricht') || text.includes('Message')) {
+        confirmationDialogIcon.textContent = 'delete';
+    } else if (text.includes('Gruppe') || text.includes('Group')) {
+        confirmationDialogIcon.textContent = 'delete_forever';
+    } else {
+        confirmationDialogIcon.textContent = 'warning';
+    }
+    
+    pendingDeleteAction = callback;
+    confirmationDialog.classList.add('show');
+}
+
+confirmationCancelBtn.addEventListener('click', () => {
+    confirmationDialog.classList.remove('show');
+    pendingDeleteAction = null;
+});
+
+confirmationConfirmBtn.addEventListener('click', () => {
+    if (pendingDeleteAction) {
+        pendingDeleteAction();
+    }
+    confirmationDialog.classList.remove('show');
+    pendingDeleteAction = null;
+});
 
 // Online Users Tracking
 function trackOnlineUsers() {
@@ -1557,6 +1789,16 @@ function initializeLoginButtons() {
             provider.addScope('email');
             provider.addScope('name');
             signInWithProvider(provider, 'Apple');
+        });
+    }
+    
+    // GitHub Login
+    if (githubLoginBtn) {
+        githubLoginBtn.addEventListener('click', () => {
+            const provider = new firebase.auth.GithubAuthProvider();
+            provider.addScope('read:user');
+            provider.addScope('user:email');
+            signInWithProvider(provider, 'GitHub');
         });
     }
     
@@ -1996,14 +2238,101 @@ function createGroupCard(groupId, group, type) {
             </div>
         </div>
         ${type === 'private' && group.code ? `<div class="group-admin">Code: ${group.code}</div>` : ''}
-        ${isOwner ? `<div class="group-admin" style="background: rgba(245, 158, 11, 0.15); color: var(--warning);">Besitzer</div>` : ''}
+        ${isOwner ? `<div class="group-founder">👑 Gründer</div>` : ''}
     `;
+    
+    // Add management buttons if user is owner
+    if (isOwner) {
+        const managementDiv = document.createElement('div');
+        managementDiv.className = 'group-management';
+        managementDiv.innerHTML = `
+            <button class="group-management-btn delete-group-btn" title="Gruppe löschen">
+                <span class="material-icons-outlined" style="font-size: 18px;">delete</span>
+            </button>
+        `;
+        
+        card.appendChild(managementDiv);
+        
+        // Add delete event listener
+        const deleteBtn = managementDiv.querySelector('.delete-group-btn');
+        deleteBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent group join
+            showConfirmationDialog(
+                'Gruppe löschen',
+                `Bist du sicher, dass du die Gruppe "${group.name}" löschen möchtest? Diese Aktion kann nicht rückgängig gemacht werden.`,
+                () => deleteGroup(groupId, type, group.name)
+            );
+        });
+    }
     
     card.addEventListener('click', () => {
         joinGroup(groupId, type);
     });
     
     return card;
+}
+
+function deleteGroup(groupId, type, groupName) {
+    if (!currentUser) return;
+    
+    showNotification('Lösche Gruppe...', `"${groupName}" wird gelöscht`, 'info');
+    
+    // Remove from groups
+    db.ref(`groups/${type}/${groupId}`).remove()
+        .then(() => {
+            // Remove from all users' userGroups
+            return db.ref(`userGroups`).once('value').then(snapshot => {
+                const updates = {};
+                const allUserGroups = snapshot.val();
+                
+                if (allUserGroups) {
+                    Object.keys(allUserGroups).forEach(userId => {
+                        if (allUserGroups[userId][type] && allUserGroups[userId][type][groupId]) {
+                            updates[`userGroups/${userId}/${type}/${groupId}`] = null;
+                        }
+                    });
+                }
+                
+                // Remove all messages
+                updates[`messages/${type}/${groupId}`] = null;
+                
+                return db.ref().update(updates);
+            });
+        })
+        .then(() => {
+            showNotification('Gruppe gelöscht', `"${groupName}" wurde erfolgreich gelöscht`, 'success');
+            
+            // Reload groups
+            if (currentGroup && currentGroup.id === groupId) {
+                // If we were in this group, go back to groups
+                currentGroup = null;
+                const navItems = document.querySelectorAll('.nav-item');
+                navItems.forEach(item => item.classList.remove('active'));
+                document.querySelector('[data-page="myGroups"]').classList.add('active');
+                showPage('myGroups');
+            } else {
+                // Just reload current view
+                const activePage = document.querySelector('.nav-item.active');
+                if (activePage) {
+                    const page = activePage.dataset.page;
+                    switch(page) {
+                        case 'public':
+                            loadPublicGroups();
+                            break;
+                        case 'private':
+                            loadPrivateGroups();
+                            break;
+                        case 'myGroups':
+                            loadMyGroups();
+                            break;
+                    }
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting group:', error);
+            showNotification('Fehler', 'Gruppe konnte nicht gelöscht werden', 'error');
+        });
 }
 
 function joinGroup(groupId, type) {
@@ -2077,6 +2406,15 @@ function enterGroup(groupId, type, group) {
     if (headerSubtitle) headerSubtitle.textContent = group.description || 'Gruppenchat';
     if (headerIcon) headerIcon.textContent = type === 'public' ? 'public' : 'lock';
     
+    // Add group owner info to header
+    if (group.ownerName && group.ownerId) {
+        const isOwner = currentUser && currentUser.uid === group.ownerId;
+        const ownerInfo = isOwner ? '(Du bist der Gründer)' : `(Gründer: ${group.ownerName})`;
+        if (headerSubtitle) {
+            headerSubtitle.textContent += ' ' + ownerInfo;
+        }
+    }
+    
     // Clear messages
     const messagesContainer = document.getElementById('messagesContainer');
     if (messagesContainer) {
@@ -2107,7 +2445,7 @@ function enterGroup(groupId, type, group) {
             
             if (!sentMessageIds.has(messageId)) {
                 sentMessageIds.add(messageId);
-                displayMessage(message);
+                displayMessage(messageId, message);
             }
         });
 }
@@ -2123,7 +2461,7 @@ function loadMessages(groupId, type) {
             Object.entries(messages).forEach(([messageId, message]) => {
                 if (!sentMessageIds.has(messageId)) {
                     sentMessageIds.add(messageId);
-                    displayMessage(message);
+                    displayMessage(messageId, message);
                 }
             });
         }
@@ -2135,7 +2473,7 @@ function loadMessages(groupId, type) {
     });
 }
 
-function displayMessage(message) {
+function displayMessage(messageId, message) {
     const messagesContainer = document.getElementById('messagesContainer');
     if (!messagesContainer || !currentUser) return;
     
@@ -2147,9 +2485,12 @@ function displayMessage(message) {
         minute: '2-digit'
     });
     
+    const isOwner = currentGroup && currentGroup.ownerId === message.userId;
+    const isCurrentUserMessage = message.userId === currentUser.uid;
+    
     messageDiv.innerHTML = `
         <div class="message-header">
-            <span class="message-name">${message.userName || 'Unbekannt'}</span>
+            <span class="message-name">${message.userName || 'Unbekannt'} ${isOwner ? '👑' : ''}</span>
             <span class="message-time">${time}</span>
         </div>
         <div class="message-bubble">
@@ -2157,8 +2498,58 @@ function displayMessage(message) {
         </div>
     `;
     
+    // Add delete button for own messages or group owner
+    if (isCurrentUserMessage || (currentGroup && currentGroup.ownerId === currentUser.uid)) {
+        const actionsDiv = document.createElement('div');
+        actionsDiv.className = 'message-actions';
+        actionsDiv.innerHTML = `
+            <button class="message-action-btn delete-message-btn" title="Nachricht löschen">
+                <span class="material-icons-outlined" style="font-size: 16px;">delete</span>
+            </button>
+        `;
+        
+        messageDiv.appendChild(actionsDiv);
+        
+        // Add delete event listener
+        const deleteBtn = actionsDiv.querySelector('.delete-message-btn');
+        deleteBtn.addEventListener('click', () => {
+            showConfirmationDialog(
+                'Nachricht löschen',
+                'Bist du sicher, dass du diese Nachricht löschen möchtest?',
+                () => deleteMessage(messageId)
+            );
+        });
+    }
+    
     messagesContainer.appendChild(messageDiv);
     messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function deleteMessage(messageId) {
+    if (!currentGroup || !currentUser) return;
+    
+    const messageRef = db.ref(`messages/${currentGroup.type}/${currentGroup.id}/${messageId}`);
+    
+    messageRef.remove()
+        .then(() => {
+            // Remove from sentMessageIds
+            sentMessageIds.delete(messageId);
+            
+            // Remove from UI
+            const messagesContainer = document.getElementById('messagesContainer');
+            if (messagesContainer) {
+                const messageElement = messagesContainer.querySelector(`[data-message-id="${messageId}"]`);
+                if (messageElement) {
+                    messageElement.remove();
+                }
+            }
+            
+            showNotification('Nachricht gelöscht', 'Die Nachricht wurde erfolgreich gelöscht', 'success');
+        })
+        .catch(error => {
+            console.error('Error deleting message:', error);
+            showNotification('Fehler', 'Nachricht konnte nicht gelöscht werden', 'error');
+        });
 }
 
 // Group Creation with Duplicate Protection
